@@ -1,0 +1,108 @@
+body {
+    font-family: 'Microsoft Yahei', '微软雅黑', arial;
+}
+
+.popover {
+    max-width: 600px;
+}
+
+th, td {
+    text-align: center;
+}
+
+.wrapper {
+    min-width: 1400px;
+}
+
+.outterblock {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.title {
+    background-color: #009DD9;
+    height: 45px;
+    color: #fff;
+    padding-left: 20px;
+    line-height: 45px;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px #BBB;
+}
+
+.innerblock {
+    background-color: #fff;
+    border: 1px #ccc solid;
+    min-height: 50px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px #BBB;
+    padding: 10px 10px;
+}
+
+.box {
+    min-height: 30px;
+    border-top: 4px #009DD9 solid;
+    margin: 5px 5px 10px 5px;
+}
+
+.box_title {
+    font-size: 16px;
+    color: #222;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.box .content {
+    margin: 15px 10px 15px 10px;
+}
+
+.blank {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.pointercursor {
+    cursor: pointer;
+}
+
+.alert .close {
+    width: 30px;
+    height: 30px;
+    font-size: 21px;
+    position: relative;
+    top: -5px;
+}
+
+.searchbox th, .searchbox td {
+    text-align: center;
+    line-height: 60px;
+    height: 60px;
+}
+
+.searchbox th {
+    text-align: center;
+    line-height: 60px;
+    height: 30px;
+}
+
+.searchbox button {
+    width: 80px;
+}
+
+.searchbox .andorbtn {
+    position: relative;
+    top: -1px;
+    display: none;
+    height: 0px;
+    top: 30px;
+}
+
+.search_opt_but button {
+    width: 100px;
+}
+
+.searchbox .close {
+    margin-top: 5px;
+    width: 20px;
+}

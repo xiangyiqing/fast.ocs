@@ -1,0 +1,26 @@
+/* side */
+.side{position:fixed;width:50px;height:275px;left:0px;top:250px;z-index:100;}
+.side ul{list-style: none;}
+.side ul li{width:50px;height:50px;float:right;position:relative;border-bottom:1px solid #444;}
+.side ul li .sidebox{position:absolute;width:50px;height:50px;top:0;left:0;transition:all 0.3s;background:#000;opacity:0.8;filter:Alpha(opacity=80);color:#fff;font:14px/54px "微软雅黑";overflow:hidden;}
+.side ul li .sidetop{width:50px;height:50px;line-height:50px;display:inline-block;background:#000;opacity:0.8;filter:Alpha(opacity=80);transition:all 0.3s;}
+.side ul li .sidetop:hover{background:#ae1c1c;opacity:1;filter:Alpha(opacity=100);}
+.side ul li span{float:right; font-size: 30px; width: 30px; margin: 5px 5px;}
+
+<div class="side">
+	<ul>
+		<li><a href="<%=basePath%>sysstatus" target="_blank"><div class="sidebox"><span class="glyphicon glyphicon-cog"></span>客服中心</div></a></li>
+		<li><a href="<%=basePath%>msb" target="_blank"><div class="sidebox"><span class="glyphicon glyphicon-tasks"></span>客户案例</div></a></li>
+		<li style="border:none;"><a href="javascript:goTop();" class="sidetop"><span class="glyphicon glyphicon-circle-arrow-up"></span></a></li>
+	</ul>
+</div>
+
+$(".side ul li").hover(function(){
+			$(this).find(".sidebox").stop().animate({"width":"124px"},200).css({"opacity":"1","filter":"Alpha(opacity=100)","background":"#ae1c1c"})	
+		},function(){
+			$(this).find(".sidebox").stop().animate({"width":"54px"},200).css({"opacity":"0.8","filter":"Alpha(opacity=80)","background":"#000"})	
+		});
+		
+function goTop(){
+		$('html,body').animate({'scrollTop':0},600); //滚回顶部的时间，越小滚的速度越快~
+	}
