@@ -253,7 +253,7 @@ function toDateStr(arg) {
 }
 
 function getDateStr(arg) {
-    if (typeof arg !== undefined) {
+    if (arg !== undefined) {
         return arg.pattern("yyyy-MM-dd HH:mm:ss");
     } else {
         return (new Date()).format("yyyy-MM-dd hh:mm:ss");

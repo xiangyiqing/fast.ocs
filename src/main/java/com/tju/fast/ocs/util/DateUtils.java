@@ -1,6 +1,7 @@
 package com.tju.fast.ocs.util;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -26,4 +27,7 @@ public class DateUtils {
         return new SimpleDateFormat(format).format(arg);
     }
 
+    public static Timestamp getTimestamp(String date) throws ParseException {
+        return new Timestamp((new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(date)).getTime());
+    }
 }

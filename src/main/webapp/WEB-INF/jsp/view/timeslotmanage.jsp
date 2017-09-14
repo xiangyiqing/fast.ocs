@@ -26,9 +26,12 @@
             </th>
             <th style="text-align: right;">
                 <div class="btn-group">
-                    <button class="btn btn-default btn-sm" type="button" style="width:75px" onclick="newslot()">Submit
+                    <button class="btn btn-default btn-sm" type="button" style="width:75px" onclick="submitNewSlot()">
+                        Submit
                     </button>
-                    <button class="btn btn-default btn-sm" type="button" style="width:75px">Reset</button>
+                    <button class="btn btn-default btn-sm" type="button" style="width:75px" onclick="resetNewSlot()">
+                        Reset
+                    </button>
                 </div>
             </th>
         </tr>
@@ -50,8 +53,8 @@
         <tr>
             <td>Interval Size:</td>
             <td>
-                <select id="n_interval" class="easyui-combobox" data-options="onChange:onIntervalSelected"
-                        style="width: 200px;">
+                <select id="n_interval" class="easyui-combobox"
+                        data-options="onChange:onIntervalSelected,onClickRow:void(0)" style="width: 200px;">
                     <option value="0.5">0.5 h</option>
                     <option value="1.0">1.0 h</option>
                     <option value="2.0" selected>2.0 h</option>
@@ -60,17 +63,21 @@
             </td>
             <td>Time Slot:</td>
             <td>
-                <select id="cc" class="easyui-combogrid" name="dept" style="width:200px;"
+                <select id="cc" class="easyui-combogrid" style="width:200px;"
                         data-options="
 			                panelWidth:450,
-			                value:'006',
+			                value:'0 new time slot.',
 			                idField:'_id',
-			                textField:'name',
+			                textField:'textField',
+			                editable:false,
+			                selectOnCheck:false,
+			                checkOnSelect:false,
 			                columns:[[
 			               		{field:'_id',title:'_id',width:40},
 			                    {field:'begintime',title:'Begin Time',width:140},
 			                    {field:'endtime',title:'End Time',width:140},
-			                    {field:'interval',title:'interval',width:80}
+			                    {field:'interval',title:'interval',width:80},
+			                    {field:'ck',title:'Reserve',checkbox:true}
 			                ]]"></select>
             </td>
         </tr>
@@ -83,10 +90,13 @@
 				toolbar: '#tb',
 				url: 'sysstatus/timeslotlist',
 				method: 'get',
+				selectOnCheck:false,
+			    checkOnSelect:false,
 				onClickRow: onClickRow
 			" rownumbers="true" pagination="true">
         <thead>
         <tr>
+            <th data-options="field:'ck',checkbox:true">Slot ID</th>
             <th data-options="field:'id',width:80">Slot ID</th>
             <th data-options="field:'begintime',width:130,editor:{type:'datetimebox',options:{showSeconds:false}}">Begin
                 Time
@@ -94,7 +104,7 @@
             <th data-options="field:'endtime',width:130,editor:{type:'datetimebox',options:{showSeconds:false}}">End
                 Time
             </th>
-            <th data-options="field:'note',width:220">End Time</th>
+            <th data-options="field:'note',width:220,editor:{type:'text'}">Note</th>
             <th data-options="field:'status',width:100,
 						formatter:function(value,row){
 							return value==0?'disabled':'normal';
@@ -106,22 +116,45 @@
 
     <div id="tb" style="height:auto">
         <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true"
-           onclick="append()">Add User</a>
+           onclick="append()">Add</a>
         <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true"
-           onclick="removeit()">Remove User</a>
+           onclick="removeit()">Remove</a>
         <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true"
-           onclick="edit()">Edit User</a>
+           onclick="edit()">Edit</a>
         <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true"
            onclick="accept()">Accept</a>
         <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true"
            onclick="reject()">Reject</a>
-        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-lock',plain:true"
-           onclick="resetpwd()">Reset Password</a>
         <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true"
            onclick="getChanges()">GetChanges</a>
     </div>
 </div>
 <script type="text/javascript">
+
+    function resetNewSlot() {
+        $('#n_begintime').datetimebox('reset');
+        $('#n_endtime').datetimebox('reset');
+        newSlotArray = {total: 0, rows: []};
+        $('#cc').combogrid('reset');
+    }
+
+    function submitNewSlot() {
+        var array = new Array();
+        for (var i = 0; i < (newSlotArray['rows']).length; i++) {
+            if (newSlotArray['rows'][i].checked) {
+                array.push(newSlotArray['rows'][i]);
+            }
+        }
+        var s = JSON.stringify(array);
+        $.post('sysstatus/addtimeslot', {newslots: s}, function (json, status) {
+            if (json.status == 'success') {
+                $('#cc').combogrid('reload');
+            } else {
+
+            }
+        });
+    }
+
     var newSlotArray = {total: 0, rows: []};
 
     function toStr(date) {
@@ -141,9 +174,6 @@
         return d;
     }
 
-    function newslot() {
-        $('#n_begintime').datetimebox('isValid');
-    }
 
     function onIntervalSelected(newValue, oldValue) {
         var begin = $('#n_begintime').datetimebox('getValue');
@@ -180,9 +210,13 @@
         } catch (e) {
             console(e);
         }
+        for (var i = 0; i < array.length; i++) {
+            array[i].textField = array.length + ' new time slot.';
+            array[i].checked = true;
+        }
         newSlotArray = {total: array.length, rows: array};
         $("#cc").combogrid({data: newSlotArray});
-        console.log(newSlotArray);
+        $("#cc").combogrid('setValue', array.length + ' new time slot.');
     }
 
     var slot_status = [{"value": 0, "text": "disabled"}, {"value": 1, "text": "normal"}];
@@ -265,18 +299,6 @@
 
     function getChanges() {
         return $('#dg').datagrid('getChanges');
-    }
-
-    function resetpwd() {
-        var index = clickIndex;
-        var userid = $('#dg').datagrid('getRows')[index]['userid'];
-        $.post('user/resetpassword', {userid: userid}, function (json, status) {
-            if (json.status == 'success') {
-                $('#dg').datagrid('reload');
-            } else {
-                toastr.error("Operation Status: " + json.status);
-            }
-        });
     }
 
     $(document).ready(function () {
