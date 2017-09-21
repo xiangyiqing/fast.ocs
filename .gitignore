@@ -23,5 +23,5 @@ dist/
 nbdist/
 .nb-gradle/
 /.logs/app/
-/.mvn/
+#/.mvn/
 /.logs/
