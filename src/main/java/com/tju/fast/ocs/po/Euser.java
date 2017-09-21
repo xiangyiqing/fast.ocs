@@ -1,14 +1,14 @@
 package com.tju.fast.ocs.po;
 
-import org.sormula.annotation.Column;
-import org.sormula.annotation.Row;
+import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableId;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-@Row(tableName = "euser", inhertedFields = true)
-public class Euser {
+public class Euser extends Model<Euser> {
 
-    @Column(name = "userid")
+    @TableId("userid")
     private Integer userid;
     private String username;
     private String password;
@@ -75,4 +75,8 @@ public class Euser {
     }
 
 
+    @Override
+    protected Serializable pkVal() {
+        return userid;
+    }
 }

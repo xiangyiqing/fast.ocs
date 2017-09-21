@@ -1,7 +1,10 @@
 package com.tju.fast.ocs.po;
 
+import com.baomidou.mybatisplus.annotations.TableId;
+
 public class Fastproposal {
 
+    @TableId
     private String id;
     private String title;
     private String proposer;

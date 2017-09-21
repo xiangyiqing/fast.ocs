@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface IMSBService extends IBaseService<MSB> {
 
-    public String getMSBStatus(List<Scheduling> list);
+    String getMSBStatus(List<Scheduling> list);
 }

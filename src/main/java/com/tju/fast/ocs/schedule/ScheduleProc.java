@@ -4,7 +4,7 @@ package com.tju.fast.ocs.schedule;
 import com.tju.fast.ocs.po.Fastproposal;
 import com.tju.fast.ocs.po.MSB;
 import com.tju.fast.ocs.po.Observation;
-import com.tju.fast.ocs.po.Scheduleslot;
+import com.tju.fast.ocs.po.ScheduleSlot;
 import com.tju.fast.ocs.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -66,7 +66,7 @@ public class ScheduleProc {
     private Double rate(MSB msb) {
         // TODO Auto-generated method stub
         String id = msb.getPropid();
-        Fastproposal p = propSvc.get(id);
+        Fastproposal p = propSvc.selectById(id);
 
         return p.getRate();
     }
@@ -85,7 +85,7 @@ public class ScheduleProc {
     /**
      * @param msb msb关于最佳观测时间限制的偏好
      */
-    private void bestTime(MSB msb, Scheduleslot lot) {
+    private void bestTime(MSB msb, ScheduleSlot lot) {
         // TODO Auto-generated method stub
         Date begin = new Date(msb.getBegintime().getTime());
         Date end = new Date(msb.getEndtime().getTime());
@@ -100,7 +100,7 @@ public class ScheduleProc {
      *
      * @param msb
      */
-    private void weather(MSB msb, Scheduleslot lot) {
+    private void weather(MSB msb, ScheduleSlot lot) {
         // TODO Auto-generated method stub
         pref *= 1.0;
     }
@@ -110,7 +110,7 @@ public class ScheduleProc {
      *
      * @param msb
      */
-    private void strongSource(MSB msb, Scheduleslot lot) {
+    private void strongSource(MSB msb, ScheduleSlot lot) {
         // TODO Auto-generated method stub
         pref *= 1.0;
     }
@@ -118,10 +118,10 @@ public class ScheduleProc {
     /**
      * @param msb msb关于中天距离限制在每个可用时间片的偏好
      */
-    private void distance(MSB msb, Scheduleslot lot) {
+    private void distance(MSB msb, ScheduleSlot lot) {
         // TODO Auto-generated method stub
         if (capacity == 1) {
-            List<Observation> ListOb = obsSvc.getList(null, "where msbid=?", msb.getId());
+            List<Observation> ListOb = obsSvc.selectListByMSBId(msb.getId());
             int sFlag, tFlag;
             double sALT, tALT, tmp = 0;
             for (Observation m : ListOb) {
@@ -149,7 +149,7 @@ public class ScheduleProc {
      * @param msb
      * @param ind 根据第ind个msb关于每个时间片的偏好值，建边
      */
-    public void edgeProc(MSB msb, Scheduleslot lot, int ind) {
+    public void edgeProc(MSB msb, ScheduleSlot lot, int ind) {
         capacity = 0;
         pref = 1.0;
         bestTime(msb, lot);
@@ -190,9 +190,9 @@ public class ScheduleProc {
 
     public void work() {
         //读取msb和可用时间片
-        List<MSB> listMSB = msbSvc.getList();
+        List<MSB> listMSB = msbSvc.selectList(null);
         this.msbNum = listMSB.size();
-        List<Scheduleslot> listTime = sslotSvc.getList();
+        List<ScheduleSlot> listTime = sslotSvc.selectList(null);
         this.timeNum = listTime.size();
 
         //建图
@@ -205,7 +205,7 @@ public class ScheduleProc {
             R *= rate(m1);
             R *= priority(m1);
             int j = 1;
-            for (Scheduleslot m2 : listTime) {
+            for (ScheduleSlot m2 : listTime) {
                 edgeProc(m1, m2, i);
                 if (capacity > 0 && pref > 0) {
                     F.addEdge(i, getMNum() + j, capacity, R * pref);

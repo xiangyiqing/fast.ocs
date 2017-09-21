@@ -1,16 +1,21 @@
 package com.tju.fast.ocs.po;
 
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
+
 import java.sql.Timestamp;
 
+@TableName("msb")
 public class MSB {
 
+    @TableId
     private String id;
     private String title;
     private String propid;
     private Integer repeatcounts;
     private Integer windspeed;
     private Integer humidity;
-    private String day_or_night;
+    private String dayOrNight;
     private Integer airtemp;
     private Integer opacity;
     private Double estimatedtime;
@@ -67,12 +72,12 @@ public class MSB {
         this.humidity = humidity;
     }
 
-    public String getDay_or_night() {
-        return day_or_night;
+    public String getDayOrNight() {
+        return dayOrNight;
     }
 
-    public void setDay_or_night(String day_or_night) {
-        this.day_or_night = day_or_night;
+    public void setDayOrNight(String dayOrNight) {
+        this.dayOrNight = dayOrNight;
     }
 
     public Integer getAirtemp() {
@@ -136,7 +141,7 @@ public class MSB {
     @Override
     public String toString() {
         return "MSB [id=" + id + ", title=" + title + ", projid=" + propid + ", repeatcounts=" + repeatcounts
-                + ", windspeed=" + windspeed + ", humidity=" + humidity + ", day_or_night=" + day_or_night
+                + ", windspeed=" + windspeed + ", humidity=" + humidity + ", dayOrNight=" + dayOrNight
                 + ", airtemp=" + airtemp + ", opacity=" + opacity + ", estimatedtime=" + estimatedtime + ", note="
                 + note + "]";
     }

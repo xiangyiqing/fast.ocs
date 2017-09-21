@@ -1,6 +1,6 @@
 package com.tju.fast.ocs.controller;
 
-import com.tju.fast.ocs.po.Scheduleslot;
+import com.tju.fast.ocs.po.ScheduleSlot;
 import com.tju.fast.ocs.service.IBaseService;
 import com.tju.fast.ocs.util.DateUtils;
 import com.tju.fast.ocs.util.Page;
@@ -51,7 +51,7 @@ public class SysStatusController extends BaseController {
 
     @RequestMapping(value = "/sysstatus/timeslotlist")
     public String timeslotList(@RequestParam int page, @RequestParam int rows, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Page<Scheduleslot> p = sslotSvc.querySlotList(page, rows);
+        Page<ScheduleSlot> p = sslotSvc.queryPage(page, rows);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("total", p.getTotalCount());
         result.put("rows", getJSONArray(p.getResult()));
@@ -65,7 +65,7 @@ public class SysStatusController extends BaseController {
             JSONArray jarray = JSONArray.fromObject(data);
             for (int i = 0; i < jarray.size(); i++) {
                 JSONObject json = jarray.getJSONObject(i);
-                Scheduleslot s = new Scheduleslot();
+                ScheduleSlot s = new ScheduleSlot();
                 s.setId("s" + System.currentTimeMillis());
                 s.setBegintime(DateUtils.getTimestamp(json.getString("begintime")));
                 s.setEndtime(DateUtils.getTimestamp(json.getString("endtime")));

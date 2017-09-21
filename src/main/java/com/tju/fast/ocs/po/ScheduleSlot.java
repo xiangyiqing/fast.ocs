@@ -1,9 +1,14 @@
 package com.tju.fast.ocs.po;
 
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
+
 import java.sql.Timestamp;
 
-public class Scheduleslot {
+@TableName("Scheduleslot")
+public class ScheduleSlot {
 
+    @TableId
     private String id;
     private Timestamp begintime;
     private Timestamp endtime;

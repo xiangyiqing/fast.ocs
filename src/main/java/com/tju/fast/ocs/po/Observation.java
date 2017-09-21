@@ -1,9 +1,12 @@
 package com.tju.fast.ocs.po;
 
+import com.baomidou.mybatisplus.annotations.TableId;
+
 import java.sql.Timestamp;
 
 public class Observation {
 
+    @TableId
     private String id;
     private String title;
     private String msbid;
@@ -17,19 +20,19 @@ public class Observation {
     private Integer repeatcounts;
     private Double estimatedtime;
 
-    private String start_ra;
-    private String start_dec;
-    private String end_ra;
-    private String end_dec;
+    private String startRa;
+    private String startDec;
+    private String endRa;
+    private String endDec;
     private String epoch;
     private String duration;
     private String backidentity;
-    private String scan_velocity;
-    private String scan_angle;
-    private String terminal_mode;
-    private String scan_direction;
-    private Timestamp start_time;
-    private Timestamp end_time;
+    private String scanVelocity;
+    private String scanAngle;
+    private String terminalMode;
+    private String scanDirection;
+    private Timestamp startTime;
+    private Timestamp endTime;
 
     private String note;
 
@@ -129,36 +132,36 @@ public class Observation {
         this.estimatedtime = estimatedtime;
     }
 
-    public String getStart_ra() {
-        return start_ra;
+    public String getStartRa() {
+        return startRa;
     }
 
-    public void setStart_ra(String start_ra) {
-        this.start_ra = start_ra;
+    public void setStartRa(String startRa) {
+        this.startRa = startRa;
     }
 
-    public String getStart_dec() {
-        return start_dec;
+    public String getStartDec() {
+        return startDec;
     }
 
-    public void setStart_dec(String start_dec) {
-        this.start_dec = start_dec;
+    public void setStartDec(String startDec) {
+        this.startDec = startDec;
     }
 
-    public String getEnd_ra() {
-        return end_ra;
+    public String getEndRa() {
+        return endRa;
     }
 
-    public void setEnd_ra(String end_ra) {
-        this.end_ra = end_ra;
+    public void setEndRa(String endRa) {
+        this.endRa = endRa;
     }
 
-    public String getEnd_dec() {
-        return end_dec;
+    public String getEndDec() {
+        return endDec;
     }
 
-    public void setEnd_dec(String end_dec) {
-        this.end_dec = end_dec;
+    public void setEndDec(String endDec) {
+        this.endDec = endDec;
     }
 
     public String getEpoch() {
@@ -185,52 +188,52 @@ public class Observation {
         this.backidentity = backidentity;
     }
 
-    public String getScan_velocity() {
-        return scan_velocity;
+    public String getScanVelocity() {
+        return scanVelocity;
     }
 
-    public void setScan_velocity(String scan_velocity) {
-        this.scan_velocity = scan_velocity;
+    public void setScanVelocity(String scanVelocity) {
+        this.scanVelocity = scanVelocity;
     }
 
-    public String getScan_angle() {
-        return scan_angle;
+    public String getScanAngle() {
+        return scanAngle;
     }
 
-    public void setScan_angle(String scan_angle) {
-        this.scan_angle = scan_angle;
+    public void setScanAngle(String scanAngle) {
+        this.scanAngle = scanAngle;
     }
 
-    public String getTerminal_mode() {
-        return terminal_mode;
+    public String getTerminalMode() {
+        return terminalMode;
     }
 
-    public void setTerminal_mode(String terminal_mode) {
-        this.terminal_mode = terminal_mode;
+    public void setTerminalMode(String terminalMode) {
+        this.terminalMode = terminalMode;
     }
 
-    public String getScan_direction() {
-        return scan_direction;
+    public String getScanDirection() {
+        return scanDirection;
     }
 
-    public void setScan_direction(String scan_direction) {
-        this.scan_direction = scan_direction;
+    public void setScanDirection(String scanDirection) {
+        this.scanDirection = scanDirection;
     }
 
-    public Timestamp getStart_time() {
-        return start_time;
+    public Timestamp getStartTime() {
+        return startTime;
     }
 
-    public void setStart_time(Timestamp start_time) {
-        this.start_time = start_time;
+    public void setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
     }
 
-    public Timestamp getEnd_time() {
-        return end_time;
+    public Timestamp getEndTime() {
+        return endTime;
     }
 
-    public void setEnd_time(Timestamp end_time) {
-        this.end_time = end_time;
+    public void setEndTime(Timestamp endTime) {
+        this.endTime = endTime;
     }
 
     public String getNote() {

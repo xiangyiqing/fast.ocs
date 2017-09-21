@@ -145,7 +145,7 @@
         var str = "";
         switch (arg) {
             case 1: {
-                str = "Observation System Status";
+                str = "ObservationMapper System Status";
                 break;
             }
             case 2: {

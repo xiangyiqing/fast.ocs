@@ -1,10 +1,8 @@
 package com.tju.fast.ocs.service.impl;
 
-import com.tju.fast.ocs.dao.UserDao;
+import com.tju.fast.ocs.mapper.EUserMapper;
 import com.tju.fast.ocs.po.Euser;
 import com.tju.fast.ocs.service.IUserService;
-import com.tju.fast.ocs.util.Page;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
@@ -12,30 +10,23 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 @Service
-public class UserService extends BaseService<Euser> implements IUserService {
+public class UserService extends BaseServiceImpl<EUserMapper, Euser> implements IUserService {
 
-    UserDao userDao;
-
-    @Autowired
-    public UserService(UserDao arg) {
-        super(arg);
-        this.userDao = arg;
-    }
 
     @Override
     public Euser login(String username, String pwd) throws Exception {
-        return userDao.login(username, pwd);
+        return baseMapper.login(username, pwd);
     }
 
     @Override
     public void setLastLoginTime(Euser user) throws Exception {
         user.setLastlogintime(new Timestamp(new Date().getTime()));
-        userDao.update(user);
+        baseMapper.updateById(user);
     }
 
     @Override
     public boolean isAvailable(String username) throws Exception {
-        return userDao.isAvailable(username);
+        return baseMapper.isAvailable(username);
     }
 
     @Override
@@ -45,21 +36,21 @@ public class UserService extends BaseService<Euser> implements IUserService {
         user.setLastlogintime(null);
         user.setPassword(DEFAULTPASSWORD);
         user.setStatus(IUserService.STATUS.PWDCHANGE.str);
-        userDao.save(user);
+        baseMapper.insert(user);
     }
 
     @Override
     public void disableUser(Serializable id) throws Exception {
-        Euser u = userDao.select(id);
+        Euser u = baseMapper.selectById(id);
         u.setStatus(IUserService.STATUS.DISABLE.str);
-        userDao.update(u);
+        baseMapper.updateById(u);
     }
 
     @Override
     public void enableUser(Serializable id) throws Exception {
-        Euser u = userDao.select(id);
+        Euser u = baseMapper.selectById(id);
         u.setStatus(IUserService.STATUS.NORMAL.str);
-        userDao.update(u);
+        baseMapper.updateById(u);
     }
 
     @Override
@@ -68,12 +59,7 @@ public class UserService extends BaseService<Euser> implements IUserService {
             user.setStatus(IUserService.STATUS.NORMAL.str);
         }
         user.setPassword(newpwd);
-        userDao.update(user);
-    }
-
-    @Override
-    public Page<Euser> queryUserList(int page, int pagesize) throws Exception {
-        return queryPage(page, pagesize, "ORDER BY userid asc ", null, (Object[]) null);
+        baseMapper.updateById(user);
     }
 
 }

@@ -17,6 +17,7 @@ import java.sql.SQLException;
 
 @Configuration
 public class DruidConfig {
+
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Value("${spring.datasource.url}")
@@ -116,4 +117,5 @@ public class DruidConfig {
         }
         return datasource;
     }
+
 }

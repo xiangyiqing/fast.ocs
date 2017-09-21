@@ -1,14 +1,14 @@
 package com.tju.fast.ocs.service;
 
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.service.IService;
 import com.tju.fast.ocs.util.Page;
 
-import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
-public interface IBaseService<T> {
+public interface IBaseService<E> extends IService<E> {
 
-    public enum STATUS {
+    enum STATUS {
         DISABLE("0"), NORMAL("1");
 
         private STATUS(String arg) {
@@ -18,52 +18,12 @@ public interface IBaseService<T> {
         public final String str;
     }
 
-    ;
+    Page<E> queryPage(int page, int pageSize);
 
-    /**
-     * @function 新增记录
-     */
-    public void insert(T t);
+    Page<E> queryPage(int page, int pageSize, List<Page.Order> orders);
 
-    /**
-     * @function 修改记录
-     */
-    public void update(T t);
+    Page<E> queryPage(int page, int pageSize, Wrapper<E> w);
 
-    /**
-     * @function 按主键删除
-     */
-    public boolean delete(Serializable id);
-
-    /**
-     * @function 查询记录
-     */
-    public List<T> getList();
-
-    /**
-     * @function 查询记录
-     */
-    public List<T> getList(final String orderClause, final String sql, final Object... params);
-
-    /**
-     * @function 查询记录数量
-     */
-    public int getCount(Map<String, String> map);
-
-    /**
-     * @function 按主键查询, 取一条记录
-     */
-    public T get(Serializable id);
-
-    /**
-     * @function 对刚插入的数据获得它的主键
-     */
-    public String insertGetPk(T t);
-
-    /**
-     * @function 查询记录
-     */
-    public Page<T> queryPage(final int pageNo, final int pageSize, final String orderClause,
-                             final String sql, final Object... params);
+    Page<E> queryPage(int page, int pageSize, Wrapper<E> conditions, List<Page.Order> orders);
 
 }

@@ -1,13 +1,10 @@
 package com.tju.fast.ocs.service;
 
-import com.tju.fast.ocs.po.Scheduleslot;
-import com.tju.fast.ocs.util.Page;
+import com.tju.fast.ocs.po.ScheduleSlot;
 
 import java.util.List;
 
-public interface IScheduleslotService extends IBaseService<Scheduleslot> {
+public interface IScheduleslotService extends IBaseService<ScheduleSlot> {
 
-    public List<Scheduleslot> getAvailableSlotList();
-
-    public Page<Scheduleslot> querySlotList(int page, int pagesize) throws Exception;
+    List<ScheduleSlot> getAvailableSlotList();
 }

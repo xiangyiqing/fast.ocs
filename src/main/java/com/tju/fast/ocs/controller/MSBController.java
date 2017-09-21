@@ -1,5 +1,8 @@
 package com.tju.fast.ocs.controller;
 
+import com.baomidou.mybatisplus.mapper.Condition;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
 import com.tju.fast.ocs.connection.ObsOrderUtils;
 import com.tju.fast.ocs.po.*;
 import com.tju.fast.ocs.schedule.Ans;
@@ -42,7 +45,7 @@ public class MSBController extends BaseController {
      */
     @RequestMapping(value = "/msb")
     public String msb(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        request.setAttribute("proplist", propSvc.getList());
+        request.setAttribute("proplist", propSvc.selectList(null));
         return "msb";
     }
 
@@ -60,16 +63,19 @@ public class MSBController extends BaseController {
         try {
             String str = request.getParameter("search");
             Pair<String, List<Object>> sql = advancedSearchSQLGen(str);
-            List<MSB> list = msbSvc.getList(null, sql.first, sql.second.toArray());
+            List<MSB> list = msbSvc.selectList(Condition.create().where(sql.first, (Object[]) sql.second.toArray()));
             //construct json string
             JSONArray jarrout = new JSONArray();
             for (MSB m : list) {
                 //Scheduled
-                List<Scheduling> schlist = sSvc.getList(m.getId());
+                List<Scheduling> schlist = sSvc.selectListByMSBIds(Lists.newArrayList(m.getId()));
                 for (int i = 0; i < schlist.size(); i++) {
                     Scheduling sching = schlist.get(i);
                     String slotid = sching.getSsltid();
-                    Scheduleslot slot = sslotSvc.get(slotid);
+                    if (StringUtils.isEmpty(slotid)) {
+                        continue;
+                    }
+                    ScheduleSlot slot = sslotSvc.selectById(slotid);
                     if (slot == null) {
                         continue;
                     }
@@ -80,7 +86,7 @@ public class MSBController extends BaseController {
                     o.accumulate("end", DateUtils.getSimpleDate(slot.getEndtime()));
                     o.accumulate("status", sching.getStatus());
                     //added
-                    o.accumulate("msbid_rc", sching.getMsbid_repeatcount());
+                    o.accumulate("msbid_rc", sching.getMsbidRepeatcount());
                     o.accumulate("propid", m.getPropid());
                     o.accumulate("note", m.getNote());
                     jarrout.add(o);
@@ -108,12 +114,12 @@ public class MSBController extends BaseController {
         try {
             String str = request.getParameter("msbid");
             if (!StringUtils.isEmpty(str)) {
-                MSB msb = msbSvc.get(str);
-                List<Observation> obslist = obsSvc.getList(null, "where msbid = ?", msb.getId());
+                MSB msb = msbSvc.selectById(str);
+                List<Observation> obslist = obsSvc.selectList(Condition.create().eq("msbid", msb.getId()));
                 JSONObject json = JSONObject.fromObject(msb);
                 JSONArray jarr = JSONArray.fromObject(obslist);
                 json.accumulate("observations", jarr);
-                List<Scheduling> slist = sSvc.getList(msb.getId());
+                List<Scheduling> slist = sSvc.selectListByMSBIds(Lists.newArrayList(msb.getId()));
                 int observedcounts = 0;
                 Double observedtime = 0.0;
                 String status = "0";
@@ -130,7 +136,7 @@ public class MSBController extends BaseController {
                 json.accumulate("observedtime", observedtime);
                 json.accumulate("status", status);
                 //instruction
-                List<Scheduling> _slist = sSvc.getList(null, "where msbid=?", msb.getId());
+                List<Scheduling> _slist = sSvc.selectListByMSBIds(Lists.newArrayList(msb.getId()));
                 List<ObsOrder> orders = generateObsOrders(_slist);
                 List<String> instStrList = new ArrayList<String>();
                 for (int i = 0; i < orders.size(); i++) {
@@ -163,7 +169,7 @@ public class MSBController extends BaseController {
             List<Ans> anslist = sp.ansList;
             for (Ans a : anslist) {
                 String msbid = a.getMsbId();
-                List<Scheduling> slist = sSvc.getList(msbid);
+                List<Scheduling> slist = sSvc.selectListByMSBIds(Lists.newArrayList(msbid));
                 int rst_i = 0;
                 for (int i = 0; i < slist.size(); i++) {
                     Scheduling s = slist.get(i);
@@ -180,7 +186,7 @@ public class MSBController extends BaseController {
 
                 }
                 for (Scheduling s : slist) {
-                    sSvc.update(s);
+                    sSvc.updateById(s);
                 }
             }
             sp.ansClear();
@@ -202,10 +208,10 @@ public class MSBController extends BaseController {
      */
     @RequestMapping(value = "/msb/adjust")
     public String msbAdjust(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        List<Scheduleslot> sslot = sslotSvc.getAvailableSlotList();
+        List<ScheduleSlot> sslot = sslotSvc.getAvailableSlotList();
         request.setAttribute("schedulesolt", sslot);
         JSONArray jarray = new JSONArray();
-        for (Scheduleslot s : sslot) {
+        for (ScheduleSlot s : sslot) {
             JSONObject o = new JSONObject();
             o.accumulate("slotid", s.getId());
             o.accumulate("begintime", DateUtils.getSimpleDate(s.getBegintime()));
@@ -230,17 +236,17 @@ public class MSBController extends BaseController {
         try {
             String str = request.getParameter("search");
             Pair<String, List<Object>> sql = advancedSearchSQLGen(str);
-            List<MSB> list = msbSvc.getList(null, sql.first, sql.second.toArray());
+            List<MSB> list = msbSvc.selectList(Condition.create().where(sql.first, (Object[]) sql.second.toArray()));
             //construct json string
             JSONArray jarrout = new JSONArray();
             for (MSB m : list) {
                 //Scheduled
-                List<Scheduling> sslots = sSvc.getList(m.getId());
+                List<Scheduling> sslots = sSvc.selectListByMSBIds(Lists.newArrayList(m.getId()));
                 for (Scheduling sslot : sslots) {
                     JSONObject o = new JSONObject();
                     o.accumulate("id", sslot.getId());
                     o.accumulate("msbid", sslot.getMsbid());
-                    o.accumulate("msbid_rc", sslot.getMsbid_repeatcount());
+                    o.accumulate("msbid_rc", sslot.getMsbidRepeatcount());
                     o.accumulate("slotid", sslot.getSsltid());
                     o.accumulate("status", sslot.getStatus());
                     o.accumulate("observedcounts", sslot.getObservedcounts());
@@ -269,10 +275,10 @@ public class MSBController extends BaseController {
             for (int i = 0; i < jarray.size(); i++) {
                 JSONObject o = (JSONObject) jarray.get(i);
                 String id = o.getString("id");
-                Scheduling s = sSvc.get(Integer.valueOf(id));
+                Scheduling s = sSvc.selectById(Integer.valueOf(id));
                 s.setSsltid(o.getString("slotid"));
                 s.setLocked(o.getString("locked"));
-                sSvc.update(s);
+                sSvc.updateById(s);
             }
             return writeJSONSuccResponse(response, null);
         } catch (Exception e) {
@@ -286,17 +292,9 @@ public class MSBController extends BaseController {
         String result = "none.";
         try {
             String str = request.getParameter("schedulelist");
-            String[] msbids = str.split(";");
-            if (msbids.length > 0) {
-                StringBuffer sql = new StringBuffer();
-                sql.append("where ");
-                for (int i = 0; i < msbids.length; i++) {
-                    sql.append("msbid=? ");
-                    if (i < msbids.length - 1) {
-                        sql.append("or ");
-                    }
-                }
-                List<Scheduling> _slist = sSvc.getList(null, sql.toString(), (Object[]) msbids);
+            List<String> msblist = Splitter.on(";").omitEmptyStrings().splitToList(str);
+            if (!msblist.isEmpty()) {
+                List<Scheduling> _slist = sSvc.selectListByMSBIds(msblist);
                 result = sendInstructions(_slist);
             }
             return writeJSONSuccResponse(response, result);
@@ -310,7 +308,7 @@ public class MSBController extends BaseController {
     public String autoExecute(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String result = "none.";
         try {
-            List<Scheduling> _slist = sSvc.getList();
+            List<Scheduling> _slist = sSvc.selectList(null);
             result = sendInstructions(_slist);
             return writeJSONSuccResponse(response, result);
         } catch (Exception e) {
@@ -332,10 +330,10 @@ public class MSBController extends BaseController {
 
     private List<ObsOrder> generateObsOrders(List<Scheduling> _slist) {
         List<Scheduling> slist = new ArrayList<Scheduling>();
-        HashMap<String, Scheduleslot> slotmap = new HashMap<String, Scheduleslot>();
+        HashMap<String, ScheduleSlot> slotmap = new HashMap<String, ScheduleSlot>();
         for (Scheduling s : _slist) {
             if (!slotmap.containsKey(s.getSsltid())) {
-                Scheduleslot slot = sslotSvc.get(s.getSsltid());
+                ScheduleSlot slot = sslotSvc.selectById(s.getSsltid());
                 if (slot != null) {
                     //only send scheduled msbs
                     slist.add(s);
@@ -354,11 +352,11 @@ public class MSBController extends BaseController {
         List<ObsOrder> orders = new ArrayList<ObsOrder>();
         for (int i = 0; i < slist.size(); i++) {
             Scheduling s = slist.get(i);
-            MSB m = msbSvc.get(s.getMsbid());
-            Scheduleslot slot = slotmap.get(s.getSsltid());
+            MSB m = msbSvc.selectById(s.getMsbid());
+            ScheduleSlot slot = slotmap.get(s.getSsltid());
             List<Observation> obslist;
             if (!obsmap.containsKey(s.getMsbid())) {
-                obsmap.put(s.getMsbid(), obslist = obsSvc.getList(null, "where msbid=?", s.getMsbid()));
+                obsmap.put(s.getMsbid(), obslist = obsSvc.selectListByMSBId(s.getMsbid()));
             } else {
                 obslist = obsmap.get(s.getMsbid());
             }
@@ -379,12 +377,12 @@ public class MSBController extends BaseController {
      */
     class SchedulingComparator implements Comparator<Scheduling> {
 
-        HashMap<String, Scheduleslot> slotmap;
+        HashMap<String, ScheduleSlot> slotmap;
 
         /**
          * @param slotmap contained Scheduleslots
          */
-        public SchedulingComparator(HashMap<String, Scheduleslot> slotmap) {
+        public SchedulingComparator(HashMap<String, ScheduleSlot> slotmap) {
             super();
             this.slotmap = slotmap;
         }

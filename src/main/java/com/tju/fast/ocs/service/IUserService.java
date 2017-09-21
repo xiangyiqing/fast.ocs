@@ -1,13 +1,12 @@
 package com.tju.fast.ocs.service;
 
 import com.tju.fast.ocs.po.Euser;
-import com.tju.fast.ocs.util.Page;
 
 import java.io.Serializable;
 
 public interface IUserService extends IBaseService<Euser> {
 
-    public enum STATUS {
+    enum STATUS {
         DISABLE("0"), NORMAL("1"), PWDCHANGE("2");
 
         private STATUS(String arg) {
@@ -19,7 +18,7 @@ public interface IUserService extends IBaseService<Euser> {
 
     ;
 
-    public enum ROLE {
+    enum ROLE {
         ADMIN("0"), OPERATOR("1");
 
         private ROLE(String arg) {
@@ -31,21 +30,20 @@ public interface IUserService extends IBaseService<Euser> {
 
     ;
 
-    public String DEFAULTPASSWORD = "123456";
+    String DEFAULTPASSWORD = "123456";
 
-    public Euser login(String username, String pwd) throws Exception;
+    Euser login(String username, String pwd) throws Exception;
 
-    public void setLastLoginTime(Euser user) throws Exception;
+    void setLastLoginTime(Euser user) throws Exception;
 
-    public boolean isAvailable(String username) throws Exception;
+    boolean isAvailable(String username) throws Exception;
 
-    public void createUser(Euser user) throws Exception;
+    void createUser(Euser user) throws Exception;
 
-    public void disableUser(Serializable id) throws Exception;
+    void disableUser(Serializable id) throws Exception;
 
-    public void enableUser(Serializable id) throws Exception;
+    void enableUser(Serializable id) throws Exception;
 
-    public void ChangePwd(Euser user, String newpwd) throws Exception;
+    void ChangePwd(Euser user, String newpwd) throws Exception;
 
-    public Page<Euser> queryUserList(final int page, final int pagesize) throws Exception;
 }

@@ -1,5 +1,6 @@
 package com.tju.fast.ocs.util;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  * 分页对象,包含当前页数据及分页信息如总记录数
  *
  * @param <T> 实体类的类型
- * @author xiaojian
+ * @author liyue
  */
 public class Page<T> {
 
@@ -21,6 +22,8 @@ public class Page<T> {
     private int pageNo = 0;
     // 总页数
     private int totalPageCount = 0;
+    // 顺序
+    private List<Order> orders;
 
     /**
      * 构造空页
@@ -36,14 +39,23 @@ public class Page<T> {
      * @param pageSize   每页记录数
      * @param result     每页数据
      */
-    public Page(long totalCount, int pageNo, int pageSize, List<T> result) {
+    public Page(long totalCount, int pageNo, int pageSize, List<T> result, List<Order> orders) {
         this.pageSize = pageSize;
         this.totalCount = totalCount;
-        this.result = result;
+        this.result = new ArrayList<>(result);
         this.pageNo = pageNo;
 
         long count = totalCount / pageSize;
         this.totalPageCount = (int) (totalCount % pageSize == 0 ? count : count + 1);
+        this.orders = new ArrayList<>(orders);
+    }
+
+    public static <T> Page<T> build(long totalCount, int pageNo, int pageSize, List<T> result) {
+        return new Page<>(totalCount, pageNo, pageSize, result, Collections.emptyList());
+    }
+
+    public static <T> Page<T> build(long totalCount, int pageNo, int pageSize, List<T> result, List<Order> orders) {
+        return new Page<>(totalCount, pageNo, pageSize, result, orders);
     }
 
     /**
@@ -121,5 +133,44 @@ public class Page<T> {
      */
     public long previousPageCount() {
         return this.pageNo - 1;
+    }
+
+
+    public static class Order {
+        private String field;
+        private OrderEnum order;
+
+        public Order(String field, OrderEnum order) {
+            this.field = field;
+            this.order = order;
+        }
+
+        public static Order build(String field) {
+            return new Order(field, OrderEnum.asc);
+        }
+
+        public static Order build(String field, OrderEnum order) {
+            return new Order(field, order);
+        }
+
+        public String getField() {
+            return field;
+        }
+
+        public void setField(String field) {
+            this.field = field;
+        }
+
+        public OrderEnum getOrder() {
+            return order;
+        }
+
+        public void setOrder(OrderEnum order) {
+            this.order = order;
+        }
+    }
+
+    public enum OrderEnum {
+        asc, desc;
     }
 }

@@ -33,7 +33,7 @@ public class ObsOrder {
     public ObsOrder() {
     }
 
-    public ObsOrder(String id, Observation obs, Scheduleslot slot, MSB m) {
+    public ObsOrder(String id, Observation obs, ScheduleSlot slot, MSB m) {
         obsId = id;
         obsName = obs.getTitle();
         ra = obs.getRa2000();
@@ -46,13 +46,13 @@ public class ObsOrder {
         obsTime = obs.getDuration();
         dlyTag = obs.getBackidentity();
         startTime = DateUtils.getDateString(TIMEFORMAT, slot.getBegintime());
-        scanDir = obs.getScan_direction();
-        scanSpeed = obs.getScan_velocity();
-        scanSpace = obs.getScan_angle();
-        startRa = obs.getStart_ra();
-        startDec = obs.getStart_dec();
-        endRa = obs.getEnd_ra();
-        endDec = obs.getEnd_dec();
+        scanDir = obs.getScanDirection();
+        scanSpeed = obs.getScanVelocity();
+        scanSpace = obs.getScanAngle();
+        startRa = obs.getStartRa();
+        startDec = obs.getStartDec();
+        endRa = obs.getEndRa();
+        endDec = obs.getEndDec();
         remark = obs.getNote();
     }
 

@@ -1,5 +1,6 @@
 package com.tju.fast.ocs.controller;
 
+import com.baomidou.mybatisplus.mapper.Condition;
 import com.tju.fast.ocs.po.Fastproposal;
 import com.tju.fast.ocs.po.MSB;
 import com.tju.fast.ocs.service.*;
@@ -91,9 +92,9 @@ public abstract class BaseController {
     protected Pair<String, List<Object>> advancedSearchSQLGen(String search) {
         StringBuffer sql = new StringBuffer();
         List<Object> values = new ArrayList<Object>();
-
+        int stripNum = 0;
         if (!StringUtils.isEmpty(search)) {
-            sql.append("where ");
+//            sql.append("where ");
             JSONArray jarr = JSONArray.fromObject(search);
             for (int i = 0; i < jarr.size(); i++) {
                 JSONObject jobj = JSONObject.fromObject(jarr.get(i));
@@ -103,15 +104,15 @@ public abstract class BaseController {
                 String opt = convertor(jobj.getString("opt"));
                 if (type.substring(0, 1).equals("p")) {
                     if (type.equals("pid")) {
-                        sql.append("propid " + opt + " ? ");
+                        sql.append("propid " + opt + " {" + stripNum++ + "} ");
                         values.add(convertValue(Fastproposal.class, "id", value));
                     } else {
                         if (opt.contains("like")) {
                             value = "%" + value + "%";
                         }
-                        List<Fastproposal> plist = propSvc.getList("", "where " + field + " " + opt + " ? ", value);
+                        List<Fastproposal> plist = propSvc.selectList(Condition.create().where("where " + field + " " + opt + " ? ", value));
                         for (int j = 0; j < plist.size(); j++) {
-                            sql.append("propid = ? ");
+                            sql.append("propid = {" + stripNum++ + "} ");
                             values.add(convertValue(Fastproposal.class, "id", plist.get(j).getId()));
                             if (j < plist.size() - 1) {
                                 sql.append("or ");
@@ -119,7 +120,7 @@ public abstract class BaseController {
                         }
                     }
                 } else if (type.substring(0, 1).equals("m")) {
-                    sql.append(field + opt + "? ");
+                    sql.append(field + opt + "{" + stripNum++ + "} ");
                     values.add(convertValue(MSB.class, field, value));
                 }
                 if (i < jarr.size() - 1) {

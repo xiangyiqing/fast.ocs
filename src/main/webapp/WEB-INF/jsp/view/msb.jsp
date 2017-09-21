@@ -521,7 +521,7 @@
             $("#dmhm").html(json.humidity);
             $("#dmot").html(json.opacity);
             $("#dmat").html(json.airtemp);
-            $("#dmdn").html(json.day_or_night);
+            $("#dmdn").html(json.dayOrNight);
             $("#dmnt").val(json.note);
 
             var str = '';
@@ -540,19 +540,19 @@
                 str += '<td>' + (os[i])['backend'] + '</td>';
                 str += '<td>' + (os[i])['interfreq'] + '</td>';
 
-                str += '<td>' + (os[i])['start_ra'] + '</td>';
-                str += '<td>' + (os[i])['start_dec'] + '</td>';
-                str += '<td>' + (os[i])['end_ra'] + '</td>';
-                str += '<td>' + (os[i])['end_dec'] + '</td>';
+                str += '<td>' + (os[i])['startRa'] + '</td>';
+                str += '<td>' + (os[i])['startDec'] + '</td>';
+                str += '<td>' + (os[i])['endRa'] + '</td>';
+                str += '<td>' + (os[i])['endDec'] + '</td>';
                 str += '<td>' + (os[i])['epoch'] + '</td>';
                 str += '<td>' + (os[i])['duration'] + '</td>';
                 str += '<td>' + (os[i])['backidentity'] + '</td>';
-                str += '<td>' + (os[i])['scan_velocity'] + '</td>';
-                str += '<td>' + (os[i])['scan_angle'] + '</td>';
-                str += '<td>' + (os[i])['terminal_mode'] + '</td>';
-                str += '<td>' + (os[i])['scan_direction'] + '</td>';
-                str += '<td>' + toDateStr((os[i])['start_time']) + '</td>';
-                str += '<td>' + toDateStr((os[i])['end_time']) + '</td>';
+                str += '<td>' + (os[i])['scanVelocity'] + '</td>';
+                str += '<td>' + (os[i])['scanAngle'] + '</td>';
+                str += '<td>' + (os[i])['terminalMode'] + '</td>';
+                str += '<td>' + (os[i])['scanDirection'] + '</td>';
+                str += '<td>' + toDateStr((os[i])['startTime']) + '</td>';
+                str += '<td>' + toDateStr((os[i])['endTime']) + '</td>';
                 str += '</tr>';
             }
             $("#obs_table").append(str);

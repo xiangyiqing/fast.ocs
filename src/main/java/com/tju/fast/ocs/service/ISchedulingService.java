@@ -7,9 +7,7 @@ import java.util.List;
 
 public interface ISchedulingService extends IBaseService<Scheduling> {
 
-    public Scheduling get(Serializable msbid, Serializable slotid) throws Exception;
+    Scheduling get(Serializable msbid, Serializable slotid) throws Exception;
 
-    public List<Scheduling> getList(Serializable msbid) throws Exception;
-
-
+    List<Scheduling> selectListByMSBIds(List<? extends Serializable> msbid) throws Exception;
 }

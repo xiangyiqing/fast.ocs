@@ -46,7 +46,7 @@ public class UserController extends BaseController {
 
     @RequestMapping(value = "/user/userlist")
     public String userList(@RequestParam int page, @RequestParam int rows, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Page<Euser> p = userSvc.queryUserList(page, rows);
+        Page<Euser> p = userSvc.queryPage(page, rows);
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("total", p.getTotalCount());
         result.put("rows", getJSONArray(p.getResult()));
@@ -67,7 +67,7 @@ public class UserController extends BaseController {
                     userSvc.createUser(u);
                 } else {
                     //updata
-                    userSvc.update(u);
+                    userSvc.updateById(u);
                 }
 
             }
@@ -81,10 +81,10 @@ public class UserController extends BaseController {
         if (!StringUtils.isEmpty(data)) {
             Euser optuser = (Euser) request.getSession().getAttribute("currentUser");
             if (optuser.getRole().equals(IUserService.ROLE.ADMIN.str)) {
-                Euser u = userSvc.get(new Integer(data));
+                Euser u = userSvc.selectById(new Integer(data));
                 u.setPassword(userSvc.DEFAULTPASSWORD);
                 u.setStatus(IUserService.STATUS.PWDCHANGE.str);
-                userSvc.update(u);
+                userSvc.updateById(u);
                 return writeJSONSuccResponse(response, "");
             }
         }
@@ -164,7 +164,7 @@ public class UserController extends BaseController {
                     if (u != null && !u.getStatus().equals(IUserService.STATUS.DISABLE.str)) {
                         u.setPassword(newpass);
                         u.setStatus(IUserService.STATUS.NORMAL.str);
-                        userSvc.update(u);
+                        userSvc.updateById(u);
                         session.setAttribute("currentUser", u);
                         return writeJSONSuccResponse(response, "true");
                     }
