@@ -25,7 +25,8 @@ public class ConstellationController extends BaseController {
     @RequestMapping(value = "/constellation")
     public String constellation(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
         request.setAttribute("proplist", propSvc.selectList(null));
-        return "constellation";
+//        return "constellation_wwt";
+        return "constellation_hips";
     }
 
     @RequestMapping(value = "/constellation/data")
