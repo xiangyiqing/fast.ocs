@@ -21,13 +21,13 @@
 
     <style type="text/css">
         /*div{*/
-            /*width: 50px;*/
-            /*height: 50px;*/
-            /*float: left;*/
-            /*margin-right: 20px;*/
+        /*width: 50px;*/
+        /*height: 50px;*/
+        /*float: left;*/
+        /*margin-right: 20px;*/
         /*}*/
         .tableDiv{ //doing
-            height:80px;
+        height:80px;
             margin-left: 520px;
             /*border-color: #fafeff;*/
             border:10px #fafeff;
@@ -36,10 +36,10 @@
         }
         .squareDiv{ //todo
             /*margin-top: 20px;*/
-            margin-bottom: 20px;
+        margin-bottom: 20px;
         }
         .textDiv{ //todo
-            font-size: 16pt;
+        font-size: 16pt;
             margin-right: 40px;
         }
     </style>
@@ -177,9 +177,8 @@
                                         <%--<div id="WWTCanvas"--%>
                                         <%--style="width:970px; height:680px; border-style: none; border-width: 0px;"></div>--%>
 
-                                        <button id onclick="show(0)">Constellation Skymap</button>
-                                        <button id onclick="show(1)">Constellation Area</button>
-                                        <button id onclick="show(2)">Multisource Fusion</button>
+                                        <button id onclick="show(0)">默认天区</button>
+                                        <button id onclick="show(1)">观测区域</button>
 
                                         <div>
                                             <table class="tableDiv">
@@ -201,14 +200,14 @@
 
                                         </div>
                                         <%--<div class="bigDiv">--%>
-                                            <%--<div class="squareDiv" style="background-color: #67daee"> </div>--%>
-                                            <%--&lt;%&ndash;<div class="textDiv"> <p>zheshisha</p> </div>&ndash;%&gt;--%>
+                                        <%--<div class="squareDiv" style="background-color: #67daee"> </div>--%>
+                                        <%--&lt;%&ndash;<div class="textDiv"> <p>zheshisha</p> </div>&ndash;%&gt;--%>
 
-                                            <%--<div class="squareDiv" style="background-color: #f0360e"> </div>--%>
-                                            <%--&lt;%&ndash;<div class="textDiv"> <p>zheshisha</p> </div>&ndash;%&gt;--%>
+                                        <%--<div class="squareDiv" style="background-color: #f0360e"> </div>--%>
+                                        <%--&lt;%&ndash;<div class="textDiv"> <p>zheshisha</p> </div>&ndash;%&gt;--%>
 
-                                            <%--<div class="squareDiv" style="background-color: #d3da34"></div>--%>
-                                            <%--&lt;%&ndash;<div class="textDiv"> <p>zheshisha</p> </div>&ndash;%&gt;--%>
+                                        <%--<div class="squareDiv" style="background-color: #d3da34"></div>--%>
+                                        <%--&lt;%&ndash;<div class="textDiv"> <p>zheshisha</p> </div>&ndash;%&gt;--%>
 
                                         <%--</div>--%>
 
@@ -233,7 +232,6 @@
                                         <input id="msbTodo" type="radio" name="goto" value="226.2, 18.65" checked><label for="msbTodo">  Goto msbTodo   <label>
                                         <input id="telePos" type="radio" name="goto" value="226.2, 18.65" checked><label for="telePos">  Goto telePos   <label>
 
-                                        <label><input type="button" name="RotationControl" onclick="rotationControl()" value="RotationControl"></label>
 
                                     </div>
                                 </div>
@@ -260,85 +258,55 @@
 //            target: '240 +10.65',
 //            cooFrame: 'j2000d',
 //            fov: 90
-            survey: "P/Mellinger/color",
             target: 'LMC',
             fov: 55
         });
 
     <!-- Displaying a custom HiPS image layer -->
-//    var hips = A.catalogHiPS('http://axel.u-strasbg.fr/HiPSCatService/Simbad', {
-//        onClick: 'showTable',
-//        name: 'Simbad',
-//        color: '#f00306',
-//        shape: 'plus'
-//    });
-//    aladin.addCatalog(hips);
-//
-//    var hips2 = A.catalogHiPS('http://axel.u-strasbg.fr/HiPSCatService/2MASS', {
-//        onClick: 'showTable',
-//        name: '2MASS',
-//        color: '#4ceed8',
-//        shape: 'square'
-//    });
-//    aladin.addCatalog(hips2);
+    var hips = A.catalogHiPS('http://axel.u-strasbg.fr/HiPSCatService/Simbad', {
+        onClick: 'showTable',
+        name: 'Simbad',
+        color: '#f00306',
+        shape: 'plus'
+    });
+    aladin.addCatalog(hips);
+
+    var hips2 = A.catalogHiPS('http://axel.u-strasbg.fr/HiPSCatService/2MASS', {
+        onClick: 'showTable',
+        name: '2MASS',
+        color: '#4ceed8',
+        shape: 'square'
+    });
+    aladin.addCatalog(hips2);
 
     //    var hipsDir = "http://localhost:8080/FOCx38i0101t_c0f.fitsHiPS"; //  "http://astrodeep.u-strasbg.fr/ff/data/HiPS/o_BIH_color";
     //    var testHiPS = aladin.createImageSurvey("test HiPS", "test HiPS", hipsDir, "equatorial", 13, {imgFormat: 'jpeg'});
     ////    aladin.setImageSurvey(testHiPS); // setting a custom HiPS
 
     <!-- Animate to a given position -->
-//    var startRaDec = [32.53,70];
-//    var middleRaDec = [305.5, 38.5];
-//    var endRaDec = [150,-70];
-
-    var startRaDec = [0,0];
-    var middleRaDec = [240, 0];
-    var endRaDec = [240,45];
+    var startRaDec = [32.53,70];
+    var endRaDec = [305.5, 38.5];
 
     aladin.gotoRaDec(startRaDec[0],startRaDec[1]);
+
+    //    aladin.gotoRaDec(266.41683, -29.00781);
     // Parameters are:
     //    <right ascension of final position>,
     //    <declination of final position>,
     //    <animation duration in seconds>
-    aladin.animateToRaDec(middleRaDec[0],middleRaDec[1],120);
+    //    aladin.animateToRaDec(endRaDec[0],endRaDec[1],10);
 
-//    var animateCount = 1;
-//    var rotateControl = true;
-//    function animateLoop(){
-//        if(rotateControl)
-//        {
-//            if(animateCount%3 === 1) {
-//                alert("toEnd");
-//                animateCount++;
-//                aladin.animateToRaDec(endRaDec[0], endRaDec[1], 3, animateLoop);
-//            }
-//            else if(animateCount%3 === 2) {
-//                alert("toStart");
-//                animateCount++;
-//                aladin.animateToRaDec(startRaDec[0], startRaDec[1], 3, animateLoop);
-//            }
-//            else if(animateCount%3 === 0){
-//                alert("toMiddle");
-//                animateCount++;
-//                aladin.animateToRaDec(middleRaDec[0],middleRaDec[1],3,animateLoop);
-//            }
-//            else
-//            {
-//                alert("nothing here");
-////                return；
-//            }
-//        }
-////        else
-////        {
-////            alert("stop");
-////            return false;
-////        }
-//    }
+    //function animateLoop(){
+    //    while(1)
+    //    {
+    //        var currentRaDec = aladin.getRaDec();
+    //        if(currentRaDec = startRaDec)
+    //            aladin.animateToRaDec(endRaDec[0],endRaDec[1],10);
+    //        else
+    //            aladin.animateToRaDec(startRaDec[0],startRaDec[1],10);
+    //    }
+    //}
 
-    function rotationControl(){
-        aladin.gotoRaDec(startRaDec[0],startRaDec[1]);
-        aladin.animateToRaDec(middleRaDec[0],middleRaDec[1],120);
-    }
     // 天区图选择
     //    $('input[name=survey]').change(function() {
     //        aladin.setImageSurvey($(this).val());
@@ -356,6 +324,7 @@
     });
 
     var i,j,k;
+
 
     // pid选择
     //$('input[name=PID]').change(function() {
@@ -400,10 +369,10 @@
     {
         catalog[i] = new Array();
     }
-//    var catalog = [msbData.length][maxLength];
-    var catalogToDo = new Array();
-    var catalogDoing= new Array();
-    var catalogDone = new Array();
+    //    var catalog = [msbData.length][maxLength];
+    //    var catalogToDo = [];
+    //    var catalogDoing= [];
+    //    var catalogDone = [];
 
 
     for(i = 0; i<msbData.length; i++)//14ge
@@ -416,7 +385,8 @@
                 case 0: {
                     newSrc = A.catalog({name:'MSB ToDo',shape:'catalogHiPS', color:'#67daee', sourceSize: 12});
 
-                    catalogToDo.push(newSrc);
+                    //                catalog[i].push(srcToDo);
+                    //                catalogToDo.push(srcToDo);
 
                     aladin.addCatalog(newSrc);
                     newSrc.addSources(A.source(msbData[i][j][2],msbData[i][j][3], {name: 'PID:'+ msbData[i][j][0] +' MSBID:'+msbData[i][j][1]}));
@@ -424,7 +394,10 @@
                 }
                 case 1: {
                     newSrc = A.catalog({name:'MSB Doing', shape:'catalogHiPS', color:'#f0360e', sourceSize: 12});
-                    catalogDoing.push(newSrc);
+//                    catalog[0].push(newSrc);
+                    //                catalog[i].push(srcDoing);
+                    //                catalogDoing.push(srcDoing);
+//                    catalog[0][0] = newSrc;
 
                     aladin.addCatalog(newSrc);
                     newSrc.addSources(A.source(msbData[i][j][2], msbData[i][j][3], {name: 'PID:' + msbData[i][j][0] + ' MSBID:' + msbData[i][j][1]}));
@@ -432,7 +405,9 @@
                 }
                 case 2: {
                     newSrc = A.catalog({name:'MSB Done', shape:'catalogHiPS', color:'#d3da34', sourceSize: 12});
-                    catalogDone.push(newSrc);
+//                    catalog[i][j] = newSrc;
+                    //                catalog[i].push(srcDone);
+                    //                catalogDone.push(srcDone);
 
                     aladin.addCatalog(newSrc);
                     newSrc.addSources(A.source(msbData[i][j][2], msbData[i][j][3], {name: 'PID:' + msbData[i][j][0] + ' MSBID:' + msbData[i][j][1]}));
@@ -491,10 +466,10 @@
 
         var newRow = proposalTable.rows[rowsNum];
         newRow.id = proposalData[k][0];
-        newRow.onclick = function(){
+//        newRow.onclick = function(){
 //            alert("test");
-            window.location.href= "/constellation/moc";
-        };
+////            var newRowId = this.id;
+//        };
 
         for(j=0; j<4; j++)
         {
@@ -516,7 +491,7 @@
     //    alert("test");
     //}
 
-//    change image layers using radio btns
+    //    change image layers using radio btns
     $('input[name=aladinSource]').change(function() {
         // find index of changed input
         var index = $("label input").index(this);
@@ -686,10 +661,7 @@
         if(a == 0)
             window.location.href= "/constellation";
         else if(a == 1)
-            window.location.href= "/constellation/moc";
-        else if(a == 2)
             window.location.href= "/constellation/multisourcefusion";
-
     }
 
 </script>

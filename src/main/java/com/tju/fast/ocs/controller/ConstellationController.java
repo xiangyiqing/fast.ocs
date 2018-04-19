@@ -29,6 +29,36 @@ public class ConstellationController extends BaseController {
         return "constellation_hips";
     }
 
+    @RequestMapping(value = "/constellation/multisourcefusion")
+    public String multisource(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request.setAttribute("proplist", propSvc.selectList(null));
+//        return "constellation_wwt";
+        return "constellation_multisource";
+    }
+
+    @RequestMapping(value = "/constellation/moc")
+    public String moc(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request.setAttribute("proplist", propSvc.selectList(null));
+//        return "constellation_wwt";
+        return "constellation_moc";
+    }
+
+//    @RequestMapping(value = "/LineChart/p001")
+//    public String LineChart001(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
+//        request.setAttribute("proplist", propSvc.selectList(null));
+//        return "p001";
+//    }
+
+//    @RequestMapping(value = "/LineChart/p001",method = RequestMethod.GET)
+//    public String index(){
+//        return "p001";
+//    }
+//
+//    @RequestMapping(value = "/staticPage",method = RequestMethod.GET)
+//    public String redirect(){
+////        return "redirect:/pages/final.html";
+//    }
+
     @RequestMapping(value = "/constellation/data")
     public String loadData(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
         try {
